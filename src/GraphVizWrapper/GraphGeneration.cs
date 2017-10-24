@@ -24,7 +24,7 @@ namespace GraphVizWrapper
     public class GraphGeneration : IGraphGeneration
     {
         private const string ProcessFolder = "GraphViz";
-        private const string ConfigFile = "config6";
+        private const string ConfigFile = "config6a";
 
         private readonly IGetStartProcessQuery startProcessQuery;
         private readonly IGetProcessStartInfoQuery getProcessStartInfoQuery;
@@ -39,6 +39,7 @@ namespace GraphVizWrapper
             this.registerLayoutPlugincommand = registerLayoutPlugincommand;
 
             this.graphvizPath = ConfigurationManager.AppSettings["graphVizLocation"];
+            GraphvizExtension = ConfigurationManager.AppSettings["graphVizExtension"] ?? ".exe";
         }
 
         #region Properties
@@ -59,6 +60,7 @@ namespace GraphVizWrapper
                 }
             }
         }
+        public String GraphvizExtension { get; set; }
         
         public Enums.RenderingEngine RenderingEngine
         {
@@ -94,7 +96,7 @@ namespace GraphVizWrapper
 
         private string FilePath
         {
-            get { return  GraphvizPath + this.GetRenderingEngine(this.renderingEngine) + ".exe"; }
+            get { return  GraphvizPath + this.GetRenderingEngine(this.renderingEngine) + GraphvizExtension; }
         }
 
         #endregion
@@ -116,10 +118,10 @@ namespace GraphVizWrapper
 
             byte[] output;
 
-            if (!ConfigExists)
-            {
-                this.registerLayoutPlugincommand.Invoke(FilePath, this.RenderingEngine);
-            }
+            //if (!ConfigExists)
+            //{
+            //    //this.registerLayoutPlugincommand.Invoke(FilePath, this.RenderingEngine);
+            //}
 
             string fileType = this.GetReturnType(returnType);
 
@@ -137,6 +139,11 @@ namespace GraphVizWrapper
                     var baseStream = stdOut.BaseStream;
                     output = this.ReadFully(baseStream);
                 }
+
+                //using (var stdErr = process.StandardError)
+                //{
+                //    Console.Error.WriteLine(stdErr.ReadToEnd());
+                //}
             }
 
             return output;

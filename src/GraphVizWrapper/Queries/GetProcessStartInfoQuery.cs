@@ -18,7 +18,7 @@ namespace GraphVizWrapper.Queries
             return new System.Diagnostics.ProcessStartInfo
                        {
                            WorkingDirectory = Path.GetDirectoryName(startInfoWrapper.FileName) ?? "",
-                           FileName = '"' + startInfoWrapper.FileName + '"',
+                           FileName = startInfoWrapper.FileName,
                            Arguments = startInfoWrapper.Arguments,
                            RedirectStandardInput = startInfoWrapper.RedirectStandardInput,
                            RedirectStandardOutput = startInfoWrapper.RedirectStandardOutput,
